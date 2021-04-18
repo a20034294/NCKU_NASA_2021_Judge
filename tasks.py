@@ -1,4 +1,4 @@
-from Task.anime_create import *
+from Task.anime_create import anime_create_task
 from celery import Celery
 import time
 from os import getenv as env

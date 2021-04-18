@@ -1,6 +1,5 @@
 import Controller.anime
 import os
-from tasks import *
 from dotenv import load_dotenv
 from flask import Flask
 
