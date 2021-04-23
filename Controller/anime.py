@@ -14,7 +14,7 @@ import re
 
 def create():
     data = request.get_json()
-    if data == None:
+    if data is None:
         return Response('{"message": "application/json needed"}',
                         status=406, mimetype='application/json')
 
