@@ -1,7 +1,9 @@
 from flask import jsonify, request, Response
-from tasks import anime_create
+from tasks import anime_create, celery
 from auth import token_is_valid
+from celery.result import AsyncResult
 import os
+from os import getenv as env
 import re
 """
 {
@@ -42,4 +44,17 @@ def create():
     resp_data = dict()
     resp_data['task_id'] = anime_create.delay(
         data['src_path'], data['dst_path']).task_id
+    return jsonify(resp_data)
+
+
+def status(task_id):
+    task = AsyncResult(task_id, app=celery)
+
+    resp_data = dict()
+    resp_data['task_id'] = task_id
+    resp_data['success'] = task.ready()
+    resp_data['status'] = task.status
+    if task.ready():
+        resp_data['result'] = task.result
+
     return jsonify(resp_data)
