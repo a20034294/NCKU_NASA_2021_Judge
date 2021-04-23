@@ -5,6 +5,7 @@
 ```pip3 install pipenv```
 * redis
 * ffmpeg
+```pip3 install ffmpeg```
 
 ## Before start
 ```cp .env.template .env``
