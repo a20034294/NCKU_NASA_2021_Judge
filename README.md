@@ -32,26 +32,26 @@ pipenv run celery -A tasks worker -c 1 -l info
     | Content-Type | application/json | **`Required`** |
 
 * **Body Json Params**
-    * **src_path `Required`**
-        `string`
-        Source video path, only mp4 are supported now
-    * **dst_path `Required`**
-        `string`
+    * **src_path `Required`**<br>
+        `string`<br>
+        Source video path, only mp4 are supported now<br>
+    * **dst_path `Required`**<br>
+        `string`<br>
         Output stream files destination
-    * **token `Required`**
-        `string`
-        Authorize token
+    * **token `Required`**<br>
+        `string`<br>
+        Authorize token<br>
 
 * **Respponse**
-    * **task_id**
-        `string`
-        Task id which can be used to trace this task
+    * **task_id**<br>
+        `string`<br>
+        Task id which can be used to trace this task<br>
 
 * **Example**
 
 
     * **Request**
-        ```bash
+        ```zsh
         curl --location --request POST 'http://127.0.0.1:5000/anime/create' \
         --header 'Content-Type: application/json' \
         --data-raw '{
