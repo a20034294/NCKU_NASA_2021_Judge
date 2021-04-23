@@ -2,13 +2,13 @@
 
 ## Dependencies
 * pipenv
-```pip3 install pipenv```
+`pip3 install pipenv`
 * redis
 * ffmpeg
-```pip3 install ffmpeg```
+`pip3 install ffmpeg`
 
 ## Before start
-```cp .env.template .env``
+`cp .env.template .env`
 then edit as needed
 ## Usage
 Need to run 2 program
