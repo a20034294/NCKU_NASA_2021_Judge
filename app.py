@@ -2,6 +2,7 @@ import Controller.anime
 import os
 from dotenv import load_dotenv
 from flask import Flask
+from Middleware.auth import assert_auth
 
 app = Flask(__name__)
 load_dotenv()
