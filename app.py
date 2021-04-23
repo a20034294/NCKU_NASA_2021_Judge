@@ -14,10 +14,12 @@ def hello_world():
 
 
 @app.route('/anime/create', methods=['POST'])
+@assert_auth
 def anime_create():
     return Controller.anime.create()
 
 
 @app.route('/anime/status/<task_id>', methods=['GET'])
+@assert_auth
 def anime_status(task_id):
     return Controller.anime.status(task_id)

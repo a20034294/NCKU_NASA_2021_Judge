@@ -1,6 +1,5 @@
 from flask import jsonify, request, Response
 from tasks import anime_create, celery
-from auth import token_is_valid
 from celery.result import AsyncResult
 import os
 from os import getenv as env
@@ -16,13 +15,6 @@ import re
 
 def create():
     data = request.get_json()
-    if data is None:
-        return Response('{"message": "application/json needed"}',
-                        status=406, mimetype='application/json')
-
-    if not token_is_valid(data['token']):
-        return Response('{"message": "Auth token not valid"}',
-                        status=403, mimetype='application/json')
 
     data['src_path'], dangerous_cnt = re.subn(
         '([*|\"\\\']|\.\.\\/)', '', data['src_path'])
