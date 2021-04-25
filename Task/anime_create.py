@@ -3,18 +3,68 @@ from os import getenv as env
 
 
 def anime_create_task(src_path, dst_path):
-    params = " -acodec copy" \
+    anime_create_task_h264_1080(src_path, dst_path)
+    #anime_create_task_h264_720(src_path, dst_path)
+    #anime_create_task_h264_2160(src_path, dst_path)
+    return dst_path + "/playlist.m3u8"
+
+
+def anime_create_task_h264_1080(src_path, dst_path):
+    params = \
+        " -acodec copy" \
         " -vcodec libx264" \
-        " -crf 19" \
+        " -filter_complex \"[0:v]uspp[a]; [a]gradfun[b]; [b]scale=-1:1080:flags=lanczos+full_chroma_int\"" \
+        " -crf 20" \
+        " -preset:v veryslow" \
         " -map 0 -f segment" \
         " -segment_time 5"
 
-    script = f"ffmpeg -i \"{env('ANIME_SRC_ROOT_DIR') + src_path}\"" \
+    script = \
+        f"ffmpeg -i \"{env('ANIME_SRC_ROOT_DIR') + src_path}\"" \
         f"{params}" \
-        f" -segment_list \"{env('ANIME_DST_ROOT_DIR') + dst_path}/playlist.m3u8\"" \
-        f" -segment_list_entry_prefix \"{dst_path}/\"" \
-        f" \"{dst_path}/output%04d.ts\""
+        f" -segment_list \"{env('ANIME_DST_ROOT_DIR') + dst_path}/playlist_h264_1080p_uspp.m3u8\"" \
+        f" -segment_list_entry_prefix \"/{dst_path}/\"" \
+        f" \"{env('ANIME_DST_ROOT_DIR') + dst_path}/output%04d_h264_1080p_uspp.ts\""
 
     print(script)
     os.system(script)
-    return dst_path + "/playlist.m3u8"
+
+
+def anime_create_task_h264_2160(src_path, dst_path):
+    params = \
+        " -acodec copy" \
+        " -vcodec libx264" \
+        " -filter_complex \"[0:v]gradfun[a]; [a]scale=-1:2160:flags=lanczos+full_chroma_int\"" \
+        " -crf 20" \
+        " -map 0 -f segment" \
+        " -segment_time 5"
+
+    script = \
+        f"ffmpeg -i \"{env('ANIME_SRC_ROOT_DIR') + src_path}\"" \
+        f"{params}" \
+        f" -segment_list \"{env('ANIME_DST_ROOT_DIR') + dst_path}/playlist_h264_2160p.m3u8\"" \
+        f" -segment_list_entry_prefix \"/{dst_path}/\"" \
+        f" \"{env('ANIME_DST_ROOT_DIR') + dst_path}/output%04d_h264_2160p.ts\""
+
+    print(script)
+    os.system(script)
+
+
+def anime_create_task_h264_720(src_path, dst_path):
+    params = \
+        " -acodec copy" \
+        " -vcodec libx264" \
+        " -filter_complex \"[0:v]gradfun[a]; [a]scale=-1:720:flags=lanczos+full_chroma_int\"" \
+        " -crf 20" \
+        " -map 0 -f segment" \
+        " -segment_time 5"
+
+    script = \
+        f"ffmpeg -i \"{env('ANIME_SRC_ROOT_DIR') + src_path}\"" \
+        f"{params}" \
+        f" -segment_list \"{env('ANIME_DST_ROOT_DIR') + dst_path}/playlist_h264_720p.m3u8\"" \
+        f" -segment_list_entry_prefix \"/{dst_path}/\"" \
+        f" \"{env('ANIME_DST_ROOT_DIR') + dst_path}/output%04d_h264_720p.ts\""
+
+    print(script)
+    os.system(script)
