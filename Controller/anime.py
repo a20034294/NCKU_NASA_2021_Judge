@@ -33,10 +33,8 @@ def create():
         return Response('{"message": "操你媽給我滾喔"}',
                         status=400, mimetype='application/json')
 
-    if data['src_path'][0] == '/':
-        data['src_path'] = data['src_path'][1:]
-    if data['dst_path'][0] == '/':
-        data['dst_path'] = data['dst_path'][1:]
+    data['src_path'] = data['src_path'].lstrip('/')
+    data['dst_path'] = data['dst_path'].lstrip('/')
 
     resp_data = dict()
     resp_data['task_id'] = anime_create.delay(
