@@ -37,10 +37,10 @@ pipenv run celery -A tasks worker -c 1 -l info
         Source video path, only mp4 are supported now<br>
     * **dst_path `Required`**<br>
         `string`<br>
-        Output stream files destination
+        Output stream files destination(.ts, .m3u8), when front-end request https://yourhost/dst_path/playlist.m3u8 should response playlist.m3u8 in your dst_path
     * **token `Required`**<br>
         `string`<br>
-        Authorize token<br>
+        Pre-shared authorize token<br>
 
 * **Respponse**
     * **task_id**<br>
@@ -56,8 +56,8 @@ pipenv run celery -A tasks worker -c 1 -l info
         --header 'Content-Type: application/json' \
         --data-raw '{
             "src_path": "/root/test/src.mp4",
-            "dst_path": "/root/test/celeryoutput",
-            "token": "223445678"
+            "dst_path": "/to/your/output/dir",
+            "token": "pre-shared-token"
         }'
         ```
 
