@@ -49,10 +49,17 @@ def status(task_id):
     task = AsyncResult(task_id, app=celery)
 
     resp_data = dict()
+
+    resp_data['status'] = []
+    success = task.ready()
+    if success:
+        sub_tasks_id = task.get()
+        for sub_task_id in sub_tasks_id:
+            sub_task = AsyncResult(sub_task_id, app=celery)
+            resp_data['status'].append(sub_task.status)
+            success &= sub_task.status == 'SUCCESS'
+
     resp_data['task_id'] = task_id
-    resp_data['success'] = task.ready()
-    resp_data['status'] = task.status
-    if task.ready():
-        resp_data['result'] = task.result
+    resp_data['success'] = success
 
     return jsonify(resp_data)
