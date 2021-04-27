@@ -31,7 +31,7 @@ def ffmpeg_trans_hls_task(src_path, dst_path, resolution, paraent_task_id):
     # [:-1] bacause ends with \n
     log_file = subprocess.run(
         'mktemp', shell=True, capture_output=True, check=True).stdout[:-1]
-    print(log_file)
+    print(log_file.decode('utf-8'))
 
     result = subprocess.run(
         script, shell=True, capture_output=True)
