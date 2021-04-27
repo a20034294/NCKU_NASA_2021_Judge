@@ -1,9 +1,11 @@
 import os
 from os import getenv as env
+import subprocess
 
 
 def anime_create_task(src_path, dst_path):
     ffmpeg_trans_hls(src_path, dst_path, 1080)
+
     return dst_path + "/playlist.m3u8"
 
 
@@ -31,4 +33,19 @@ def ffmpeg_trans_hls(src_path, dst_path, resolution=1080):
         f" \"{output_ts_name}\""
 
     print(script)
-    os.system(script)
+
+    # [:-1] bacause ends with \n
+    log_file = subprocess.run(
+        'mktemp', shell=True, capture_output=True, check=True).stdout[:-1]
+    print(log_file)
+
+    result = subprocess.run(
+        script, shell=True, capture_output=True)
+
+    if result.stderr is not None:
+        print(result.stderr.decode('utf-8'))
+        with open(log_file, 'w') as f:
+            f.write(result.stderr.decode('utf-8'))
+        raise Exception
+
+    print(result.stdout.decode('utf-8'))
