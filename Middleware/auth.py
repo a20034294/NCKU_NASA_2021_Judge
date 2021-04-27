@@ -17,12 +17,9 @@ def token_is_valid(token):
 def assert_auth(f):
     @wraps(f)
     def decorated_func(*args, **kws):
-        data = request.get_json()
-        if data is None:
-            return Response('{"message": "application/json needed"}',
-                            status=406, mimetype='application/json')
+        token = request.headers.get('Authorization')
 
-        if 'token' not in data.keys() or data['token'] not in token_list:
+        if token == None or token not in token_list:
             return Response('{"message": "Auth token not valid"}',
                             status=403, mimetype='application/json')
         return f(*args, **kws)

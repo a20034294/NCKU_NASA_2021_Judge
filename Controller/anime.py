@@ -14,7 +14,10 @@ import re
 
 
 def create():
-    data = request.get_json()
+    data = request.get_json(silent=True)
+    if data is None:
+        return Response('{"message": "application/json needed"}',
+                        status=406, mimetype='application/json',)
 
     data['src_path'], dangerous_cnt = re.subn(
         '([*|\"\\\']|\.\.\\/)', '', data['src_path'])

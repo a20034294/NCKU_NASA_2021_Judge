@@ -30,6 +30,7 @@ pipenv run celery -A tasks worker -c 1 -l info
     | Key | Value | Required |
     | ----| ------| -------- |
     | Content-Type | application/json | **`Required`** |
+    | Authorization | PRE-SHARED-TOKEN | **`Required`** |
 
 * **Body Json Params**
     * **src_path `Required`**<br>
@@ -38,9 +39,6 @@ pipenv run celery -A tasks worker -c 1 -l info
     * **dst_path `Required`**<br>
         `string`<br>
         Output stream files destination(.ts, .m3u8), when front-end request https://yourhost/dst_path/playlist.m3u8 should response playlist.m3u8 in your dst_path
-    * **token `Required`**<br>
-        `string`<br>
-        Pre-shared authorize token<br>
 
 * **Respponse**
     * **task_id**<br>
@@ -53,11 +51,11 @@ pipenv run celery -A tasks worker -c 1 -l info
     * **Request**
         ```zsh
         curl --location --request POST 'http://127.0.0.1:5000/anime/create' \
+        --header 'Authorization: PRE-SHARED-TOKEN' \
         --header 'Content-Type: application/json' \
         --data-raw '{
             "src_path": "/root/test/src.mp4",
-            "dst_path": "/to/your/output/dir",
-            "token": "pre-shared-token"
+            "dst_path": "/to/your/output/dir"
         }'
         ```
 
