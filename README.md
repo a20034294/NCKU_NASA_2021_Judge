@@ -21,4 +21,4 @@ pipenv run celery -A tasks worker -c 1 -l info
 ```
 
 ## Api
-### [Create new task](Document/anime_api.md)
+### [Create new task](Document/anime_api.md#create-new-task)
