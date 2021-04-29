@@ -23,3 +23,7 @@ def anime_create():
 @assert_auth
 def anime_status(task_id):
     return Controller.anime.status(task_id)
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
