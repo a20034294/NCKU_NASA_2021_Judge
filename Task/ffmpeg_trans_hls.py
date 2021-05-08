@@ -51,7 +51,7 @@ def ffmpeg_trans_hls_task(src_path, dst_path, resolution, paraent_task_id):
     result_data['playlist_path'] = os.path.join(dst_path,
                                                 f"playlist_h264_{res}p_uspp.m3u8")
     result_data['resolution'] = str(resolution)
-    result_data['patent_task_id'] = paraent_task_id
+    result_data['paraent_task_id'] = paraent_task_id
     result_data['log'] = str(result.stderr.decode('utf-8'))
 
     return result_data
