@@ -51,13 +51,20 @@ def status(task_id):
     resp_data = dict()
 
     resp_data['status'] = dict()
+    resp_data['result'] = dict()
     success = task.ready()
     if success:
         for resolution, sub_task_id in task.get().items():
             sub_task = AsyncResult(sub_task_id, app=celery)
+            print(sub_task)
 
-            resp_data['status'][resolution] = sub_task.status
-            success &= sub_task.status == 'SUCCESS'
+            sub_task_status = sub_task.status
+            if sub_task.ready():
+                resp_data['result'][resolution] = sub_task.get()
+                sub_task_status = resp_data['result'][resolution]['status']
+
+            resp_data['status'][resolution] = sub_task_status
+            success &= sub_task_status == 'SUCCESS'
 
     resp_data['task_id'] = task_id
     resp_data['success'] = success

@@ -1,6 +1,8 @@
 import os
 from os import getenv as env
 import subprocess
+from celery import states
+from celery.exceptions import Ignore
 
 
 def ffmpeg_trans_hls_task(src_path, dst_path, resolution, paraent_task_id):
@@ -36,17 +38,19 @@ def ffmpeg_trans_hls_task(src_path, dst_path, resolution, paraent_task_id):
     result = subprocess.run(
         script, shell=True, capture_output=True)
 
+    result_data = dict()
     if result.returncode != 0:
         print(result.stderr.decode('utf-8'))
         with open(log_file, 'w') as f:
             f.write(result.stderr.decode('utf-8'))
-        raise Exception
-
+        result_data['status'] = 'FAILURE'
+    else:
+        result_data['status'] = 'SUCCESS'
     print(result.stdout.decode('utf-8'))
 
-    result_data = dict()
     result_data['playlist_path'] = output_m3u8_name
     result_data['resolution'] = str(resolution)
     result_data['patent_task_id'] = paraent_task_id
+    result_data['log'] = str(result.stderr.decode('utf-8'))
 
     return result_data
