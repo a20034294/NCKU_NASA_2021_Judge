@@ -10,7 +10,7 @@ def ffmpeg_trans_hls_task(src_path, dst_path, resolution, paraent_task_id):
     params = \
         " -acodec copy" \
         " -vcodec libx264" \
-        f" -filter_complex \"[0:v]uspp[a]; [a]gradfun[b]; [b]scale=-1:{res}:flags=lanczos+full_chroma_int\"" \
+        f" -filter_complex \"[0:v]uspp[a]; [a]gradfun[b]; [b]scale=-2:{res}:flags=lanczos+full_chroma_int\"" \
         " -crf 20" \
         " -preset:v slow" \
         " -map 0 -f segment" \
