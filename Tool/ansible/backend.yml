@@ -1,0 +1,42 @@
+---
+- hosts: backend
+  tasks:
+    - name: Install redis python3-pip
+      apt:
+        name:
+          - redis-server
+          - python3-pip
+
+    - name: Install pipenv
+      pip:
+        name: pipenv
+        executable: pip3
+
+    - name: Sync src files
+      synchronize:
+        src: "{{ src_path }}"
+        dest: "{{ backend_dest_path }}"
+        rsync_opts:
+          - "--exclude-from={{ src_path }}/.gitignore"
+
+    - name: Sync .env file
+      synchronize:
+        src: "{{ src_path }}/.env"
+        dest: "{{ backend_dest_path }}/.env"
+
+    - name: Pipenv install
+      shell: |
+        pipenv install
+      args:
+        chdir: "{{ backend_dest_path }}"
+
+    - name: Run backend
+      shell: |
+        tmux kill-session -t backend
+        tmux new-session -d -s backend
+        tmux send-keys 'htop' 'C-m'
+        tmux split-window
+        tmux send-keys 'pipenv run python3 app.py' 'C-m'
+        tmux select-layout even-horizontal
+      args:
+        chdir: "{{ backend_dest_path }}"
