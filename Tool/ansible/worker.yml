@@ -16,15 +16,16 @@
 
     - name: Sync src files
       synchronize:
-        src: "{{ src_path }}"
-        dest: "{{ worker_dest_path }}"
+        src: "{{ src_path }}/"
+        dest: "{{ worker_dest_path }}/"
         rsync_opts:
           - "--exclude-from={{ src_path }}/.gitignore"
 
     - name: Sync .env file
       synchronize:
-        src: "{{ src_path }}/.env"
+        src: "{{ src_path }}/Tool/ansible/.env"
         dest: "{{ worker_dest_path }}/.env"
+        delete: yes
 
     - name: Pipenv install
       shell: |
