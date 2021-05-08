@@ -8,6 +8,7 @@ flask = "*"
 celery = {extras = ["redis"], version = "*"}
 redis = "*"
 python-dotenv = "*"
+requests = "*"
 
 [dev-packages]
 autopep8 = "*"
