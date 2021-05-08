@@ -26,9 +26,9 @@ def create():
                         status=400, mimetype='application/json')
 
     dir, extension = os.path.splitext(data['src_path'])
-    if extension != '.mp4':
-        return Response('{"message": "Only support .mp4"}',
-                        status=501, mimetype='application/json')
+#    if extension != '.mp4':
+#        return Response('{"message": "Only support .mp4"}',
+#                        status=501, mimetype='application/json')
 
     data['dst_path'], dangerous_cnt = re.subn(
         '([*|\"\\\']|\.\.\\/)', '', data['dst_path'])
