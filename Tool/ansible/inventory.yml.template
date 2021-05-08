@@ -1,0 +1,16 @@
+[worker]
+1.2.3.4 ansible_ssh_user=root ansible_ssh_private_key_file=~/.ssh/id_ed25519
+
+[backend]
+1.2.3.4 ansible_ssh_user=root ansible_ssh_private_key_file=~/.ssh/id_ed25519
+
+[global:vars]
+src_path=/root/ccns-anime-ffmpeg-pool
+worker_dest_path=/root/ccns-anime-ffmpeg-pool
+backend_dest_path=/root/ccns-anime-ffmpeg-pool
+anime_storage_ip=1.2.3.4
+anime_storage_path=/mnt/nfs/something
+
+[global:children]
+worker
+backend
