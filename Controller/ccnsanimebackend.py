@@ -13,11 +13,16 @@ def auth_request(uri, method, payload=None):
     url = env('CCNS_AMIME_BACKEND_URL') + uri
     headers = {"Authorization": f"Bearer {token}"}
 
+    print(url)
     if method == 'GET':
-        return requests.get(url=url, data=payload, headers=headers)
+        r = requests.get(url=url, data=payload, headers=headers)
+        print(r.status_code)
+        return r
 
     if method == 'POST':
-        return requests.post(url=url, data=payload, headers=headers)
+        r = requests.post(url=url, data=payload, headers=headers)
+        print(r.status_code)
+        return r
 
 
 def create_anime(
