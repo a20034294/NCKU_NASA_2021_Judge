@@ -3,6 +3,7 @@ from os import getenv as env
 import subprocess
 from celery import states
 from celery.exceptions import Ignore
+from Controller.ccnsanimebackend import create_anime_episode
 
 
 def ffmpeg_trans_hls_task(src_path, dst_path, resolution, paraent_task_id):
@@ -54,4 +55,11 @@ def ffmpeg_trans_hls_task(src_path, dst_path, resolution, paraent_task_id):
     result_data['paraent_task_id'] = paraent_task_id
     result_data['log'] = str(result.stderr.decode('utf-8'))
 
+    if env('CCNS_ANIME_BACKEND_ACTIVE') and result_data['status']:
+        anime_id, episode_count = dst_path.split('/')
+        try:
+            create_anime_episode(anime_id, episode_count,
+                                 result_data['playlist_path'], '', f"{res}p")
+        except:
+            pass
     return result_data
