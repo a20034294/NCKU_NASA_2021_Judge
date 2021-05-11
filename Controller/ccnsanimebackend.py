@@ -44,7 +44,13 @@ def create_anime(
     return
 
 
-def create_anime_episode(anime_id: str, episode: str, video_path: str, ass_path: str, resolution: str):
+def create_anime_episode(
+    anime_id: str,
+    episode: str,
+    video_path: str,
+    ass_path: str,
+    resolution: str
+):
     uri = '/anime/' + anime_id + '/episode'
     data = {
         'episode_count': episode,
