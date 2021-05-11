@@ -34,6 +34,7 @@
     - name: Run backend
       shell: |
         tmux kill-session -t backend
+        sleep 1
         tmux new-session -d -s backend
         tmux send-keys 'htop' 'C-m'
         tmux split-window

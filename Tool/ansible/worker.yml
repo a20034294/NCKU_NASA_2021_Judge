@@ -44,6 +44,7 @@
     - name: Run worker
       shell: |
         tmux kill-session -t worker
+        sleep 1
         tmux new-session -d -s worker
         tmux send-keys 'htop' 'C-m'
         tmux split-window
