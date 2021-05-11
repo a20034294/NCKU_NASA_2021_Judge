@@ -2,7 +2,7 @@ import requests
 from os import getenv as env
 
 
-def auth_request(uri, method, payload):
+def auth_request(uri, method, payload=None):
     url = env('CCNS_AMIME_BACKEND_URL') + '/token/'
     data = dict()
     data['username'] = env('CCNS_AMIME_BACKEND_USER')
