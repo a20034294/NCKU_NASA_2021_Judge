@@ -29,7 +29,7 @@ def create_anime(
     title: str,
     description: str = '',
     source: str = '未知',
-    finished: bool = False
+    finished: str = '連載中'
 ):
     uri = '/anime/'
     data = {
