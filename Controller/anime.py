@@ -36,7 +36,7 @@ def create():
 #        return Response('{"message": "Only support .mp4"}',
 #                        status=501, mimetype='application/json')
 
-    if env('CCNS_AMIME_BACKEND_ACTIVE') and 'anime_id' in data.keys() and 'episode_count' in data.keys():
+    if env('CCNS_ANIME_BACKEND_ACTIVE') and 'anime_id' in data.keys() and 'episode_count' in data.keys():
         if type(data['anime_id']) != str:
             return Response('{"message": "anime_id must be str"}',
                             status=400, mimetype='application/json')

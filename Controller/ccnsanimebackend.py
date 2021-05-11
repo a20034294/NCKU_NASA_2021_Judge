@@ -3,14 +3,14 @@ from os import getenv as env
 
 
 def auth_request(uri, method, payload=None):
-    url = env('CCNS_AMIME_BACKEND_URL') + '/token/'
+    url = env('CCNS_ANIME_BACKEND_URL') + '/token/'
     data = dict()
-    data['username'] = env('CCNS_AMIME_BACKEND_USER')
-    data['password'] = env('CCNS_AMIME_BACKEND_PASSWORD')
+    data['username'] = env('CCNS_ANIME_BACKEND_USER')
+    data['password'] = env('CCNS_ANIME_BACKEND_PASSWORD')
     result = requests.post(url, data)
     token = result.json()['access']
 
-    url = env('CCNS_AMIME_BACKEND_URL') + uri
+    url = env('CCNS_ANIME_BACKEND_URL') + uri
     headers = {"Authorization": f"Bearer {token}"}
 
     print(url)
