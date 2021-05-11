@@ -20,7 +20,22 @@ def auth_request(uri, method, payload=None):
         return requests.post(url=url, data=payload, headers=headers)
 
 
-def create_anime():
+def create_anime(
+    title: str,
+    description: str = '',
+    source: str = '未知',
+    finished: bool = False
+):
+    uri = '/anime/'
+    data = {
+        "title": title,
+        "description": description,
+        "source": source,
+        "finished": finished
+    }
+    import json
+    print(json.dumps(data))
+    print(auth_request(uri, 'POST', data).json())
     return
 
 
