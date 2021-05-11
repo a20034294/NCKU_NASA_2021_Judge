@@ -16,7 +16,9 @@ import base64
 
 
 def create():
-    data = request.get_json(silent=True)
+    print(request.get_data())
+    data = request.get_json(silent=True, force=True)
+
     if data is None:
         return Response('{"message": "Json parse error"}',
                         status=406, mimetype='application/json')

@@ -7,7 +7,7 @@ def auth_request(uri, method, payload=None):
     data = dict()
     data['username'] = env('CCNS_ANIME_BACKEND_USER')
     data['password'] = env('CCNS_ANIME_BACKEND_PASSWORD')
-    result = requests.post(url, data)
+    result = requests.post(url, json=data)
     token = result.json()['access']
 
     url = env('CCNS_ANIME_BACKEND_URL') + uri
@@ -15,12 +15,12 @@ def auth_request(uri, method, payload=None):
 
     print(url)
     if method == 'GET':
-        r = requests.get(url=url, data=payload, headers=headers)
+        r = requests.get(url=url, json=payload, headers=headers)
         print(r.status_code)
         return r
 
     if method == 'POST':
-        r = requests.post(url=url, data=payload, headers=headers)
+        r = requests.post(url=url, json=payload, headers=headers)
         print(r.status_code)
         return r
 
