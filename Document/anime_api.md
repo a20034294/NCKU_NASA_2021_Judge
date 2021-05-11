@@ -15,9 +15,15 @@
     * **src_path `Required`**<br>
         `string`<br>
         Source video path, only mp4 are supported now<br>
-    * **dst_path `Required`**<br>
+    * **dst_path `Optional(use this or anime_id and episode_count)`**<br>
         `string`<br>
         Output stream files destination(.ts, .m3u8), when front-end request https://yourhost/dst_path/playlist.m3u8 should response playlist.m3u8 in your dst_path
+    * **anime_id `Optional`**<br>
+        `string`<br>
+        Anime id of CCNSAnime_Backend, must set env('CCNS_ANIME_BACKEND_ACTIVE'), you need another repo
+    * **episode_count `Optional`**<br>
+        `string`<br>
+        Episode count of CCNSAnime_Backend, must set env('CCNS_ANIME_BACKEND_ACTIVE'), you need another repo
 
 * **Respponse**
     * **task_id**<br>
@@ -101,7 +107,17 @@
                 "1080p_uspp": "FAILURE",
                 "2160p": "SUCCESS"
             },
+            "result": {
+                "1080p": {
+                    "log": "LOGS HERE",
+                    "paraent_task_id": "02d636f0-bddc-4c40-a389-4c25d103453f",
+                    "playlist_path": "2/MQ==/playlist_h264_1080p_uspp.m3u8",
+                    "resolution": "1080",
+                    "status": "FAILURE"
+                }
+                ...
+            },
             "success": false,
-            "task_id": "932abce1-0728-4d13-940b-6662ebd9b7cf"
+            "task_id": "02d636f0-bddc-4c40-a389-4c25d103453f"
         }
         ```
