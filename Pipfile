@@ -9,6 +9,7 @@ celery = {extras = ["redis"], version = "*"}
 redis = "*"
 python-dotenv = "*"
 requests = "*"
+ansible = "*"
 
 [dev-packages]
 autopep8 = "*"
