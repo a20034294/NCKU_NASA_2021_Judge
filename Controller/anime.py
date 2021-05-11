@@ -45,7 +45,7 @@ def create():
                             status=400, mimetype='application/json')
 
         data['dst_path'] = data['anime_id'] + '/' + \
-            str(base64.urlsafe_b64encode((data['episode_count']).encode('utf-8')))
+            str(base64.urlsafe_b64encode((data['episode_count']).encode('utf-8')), 'utf-8')
 
     if 'dst_path' not in data.keys() or type(data['dst_path']) != str:
         return Response('{"message": "dst_path not set or not str"}',
