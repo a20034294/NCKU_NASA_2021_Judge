@@ -61,5 +61,6 @@ def ffmpeg_trans_hls_task(src_path, dst_path, resolution, paraent_task_id):
             create_anime_episode(anime_id, episode_count,
                                  result_data['playlist_path'], '', f"{res}p")
         except:
+            result_data['status'] = 'FAILURE CREATE EPISODE'
             pass
     return result_data
