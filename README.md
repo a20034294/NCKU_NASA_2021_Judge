@@ -5,8 +5,6 @@
 `pip3 install pipenv`
 * redis
 `apt install redis-server`
-* ffmpeg
-`apt install ffmpeg`
 
 ## Before start
 `cp .env.template .env`

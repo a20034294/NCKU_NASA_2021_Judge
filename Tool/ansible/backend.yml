@@ -1,16 +1,17 @@
 ---
 - hosts: backend
   tasks:
-    - name: Install redis python3-pip
-      apt:
-        name:
-          - redis-server
-          - python3-pip
+    # - name: Install redis python3-pip tmux
+    #   apt:
+    #     name:
+    #       - redis-server
+    #       - python3-pip
+    #       - tmux
 
-    - name: Install pipenv
-      pip:
-        name: pipenv
-        executable: pip3
+    # - name: Install pipenv
+    #   pip:
+    #     name: pipenv
+    #     executable: pip3
 
     - name: Sync src files
       synchronize:
@@ -25,11 +26,11 @@
         dest: "{{ backend_dest_path }}/.env"
         delete: yes
 
-    - name: Pipenv install
-      shell: |
-        pipenv install
-      args:
-        chdir: "{{ backend_dest_path }}"
+    # - name: Pipenv install
+    #   shell: |
+    #     pipenv install
+    #   args:
+    #     chdir: "{{ backend_dest_path }}"
 
     - name: Run backend
       shell: |

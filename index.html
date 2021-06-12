@@ -1,0 +1,64 @@
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <h1>NASA final exam 2021</h1>
+    <form action="" method="post" id="form_id">
+        學號大寫：<input type="text" name="student_id" value="F74061030"><br>
+        發的密碼：<input type="password" name="password" value="qwerasdf"><br>
+    </form>
+    <button id="button_id">開始 judge</button>
+    <script>
+        var form = $('#form_id');
+        var task_id = '';
+        var lock = false;
+        $('#button_id').click(() => {
+            $.ajax({
+                type: "POST",
+                url: "/judge/create",
+                data: form.serialize(), // serializes the form's elements.
+                crossDomain: true,
+                success: function (data) {
+                    alert("你的 judge 請求已送出 估計至少也要幾十秒才能 judge 完成 請勿刷新或重送 judge")
+                    console.log(data); // show response from the php script.
+                    task_id = data.task_id;
+                    $('#button_id').hide();
+                    $('#form_id').hide();
+                    if (lock) {
+                        clearInterval(lock);
+                    }
+                    lock = setInterval(() => {
+                        $.ajax({
+                            type: "GET",
+                            url: "/judge/status/" + task_id,
+                            crossDomain: true,
+                            success: (result) => {
+                                console.log(result);
+                                if (result.status == 'SUCCESS') {
+                                    document.write('judge 結果<br>')
+                                    document.write(JSON.stringify(result))
+                                    clearInterval(lock);
+                                } else if (result.status == 'FAILURE') {
+                                    alert('judge 壞了 問助教');
+                                    clearInterval(lock);
+                                } else {
+                                    document.writeln('目前狀況: ' + result.status + ' 請稍後 正在進行 judge<br>')
+                                }
+                            }
+                        });
+
+                    }, 1000)
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("送出失敗 請截圖 dev tools 的 network 感謝");
+                }
+            });
+        });
+    </script>
+
+    <h2>助教沒空做 UI, 會動就好</h2>
+    <h2>禁止惡意攻擊 judge 或連續送 judge request 若因此造成他人無法 judge, 當掉 </h2>
+    <h2>lock 寫起來很麻煩 拜託 judge 完一次再送新的<h2>
+
+</body>

@@ -1,5 +1,4 @@
-from Task.anime_create import anime_create_task
-from Task.ffmpeg_trans_hls import ffmpeg_trans_hls_task
+from Task.judge_create import judge_create_task
 from celery import Celery
 import time
 from os import getenv as env
@@ -15,10 +14,5 @@ celery.conf.update(task_track_started=True)
 
 
 @celery.task(bind=True)
-def anime_create(self, src_path, dst_path):
-    return anime_create_task(src_path, dst_path, self.request.id)
-
-
-@celery.task
-def ffmpeg_trans_hls(src_path, dst_path, resolution, paraent_task_id):
-    return ffmpeg_trans_hls_task(src_path, dst_path, resolution, paraent_task_id)
+def judge_create(self, student_id, password):
+    return judge_create_task(student_id, password)

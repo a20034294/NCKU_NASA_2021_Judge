@@ -4,8 +4,12 @@ from flask import Response, request
 from functools import wraps
 
 token_list = set()
-for token in json.loads(env('AUTHORIZED_TOKENS')):
-    token_list.add(token)
+with open(env('STUDENT_PATH'), 'r', encoding='utf-8') as f:
+    lines = f.readlines()
+    for line in lines:
+        word = line.split(',')
+        token_list.add(word[0] + word[1])
+        print(word[0] + word[1])
 
 
 def token_is_valid(token):
@@ -17,10 +21,11 @@ def token_is_valid(token):
 def assert_auth(f):
     @wraps(f)
     def decorated_func(*args, **kws):
-        token = request.headers.get('Authorization')
-
+        student_id = request.values.get('student_id')
+        password = request.values.get('password')
+        token = student_id + password
         if token == None or token not in token_list:
-            return Response('{"message": "Auth token not valid"}',
+            return Response('{"message": "Student id & password not valid"}',
                             status=403, mimetype='application/json')
         return f(*args, **kws)
     return decorated_func

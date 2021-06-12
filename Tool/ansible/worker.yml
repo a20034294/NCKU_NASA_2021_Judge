@@ -2,17 +2,16 @@
 
 - hosts: worker
   tasks:
-    - name: Install ffmpeg python3-pip
-      apt:
-        name:
-          - ffmpeg
-          - python3-pip
-          - nfs-common
+    # - name: Install python3-pip tmux
+    #   apt:
+    #     name:
+    #       - python3-pip
+    #       - tmux
 
-    - name: Install pipenv
-      pip:
-        name: pipenv
-        executable: pip3
+    # - name: Install pipenv
+    #   pip:
+    #     name: pipenv
+    #     executable: pip3
 
     - name: Sync src files
       synchronize:
@@ -27,19 +26,11 @@
         dest: "{{ worker_dest_path }}/.env"
         delete: yes
 
-    - name: Pipenv install
-      shell: |
-        pipenv install
-      args:
-        chdir: "{{ worker_dest_path }}"
-
-    - name: Mount CCNSAnime NFS
-      ansible.posix.mount:
-        src: "{{ anime_storage_ip }}:{{ anime_storage_path }}"
-        path: /mnt/CCNS-Anime
-        opts: rw,sync,hard,intr
-        state: mounted
-        fstype: nfs
+    # - name: Pipenv install
+    #   shell: |
+    #     pipenv install
+    #   args:
+    #     chdir: "{{ worker_dest_path }}"
 
     - name: Run worker
       shell: |
@@ -48,7 +39,7 @@
         tmux new-session -d -s worker
         tmux send-keys 'htop' 'C-m'
         tmux split-window
-        tmux send-keys 'pipenv run celery -A tasks worker -c 2 -l info' 'C-m'
+        tmux send-keys 'pipenv run celery -A tasks worker -c 5 -l info' 'C-m'
         tmux select-layout even-horizontal
       args:
         chdir: "{{ worker_dest_path }}"

@@ -1,4 +1,4 @@
-import Controller.anime
+import Controller.judge
 import os
 from dotenv import load_dotenv
 from flask import Flask
@@ -9,20 +9,20 @@ load_dotenv()
 
 
 @app.route('/')
-def hello_world():
-    return 'Hello, World!'
+def index():
+    with open('./index.html', 'r') as f:
+        return f.read()
 
 
-@app.route('/anime/create', methods=['POST'])
+@app.route('/judge/create', methods=['POST'])
 @assert_auth
-def anime_create():
-    return Controller.anime.create()
+def judge_create():
+    return Controller.judge.create()
 
 
-@app.route('/anime/status/<task_id>', methods=['GET'])
-@assert_auth
-def anime_status(task_id):
-    return Controller.anime.status(task_id)
+@app.route('/judge/status/<task_id>', methods=['GET'])
+def judge_status(task_id):
+    return Controller.judge.status(task_id)
 
 
 if __name__ == '__main__':
