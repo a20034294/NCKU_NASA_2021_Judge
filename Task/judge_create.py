@@ -32,6 +32,7 @@ def judge_create_task(student_id, password):
     chk_1a(ip)
     chk_2a(ip)
     chk_2c(ip, student_id, password)
+    chk_2e(ip)
     try:
         driver.close()
     except:
@@ -95,4 +96,20 @@ def chk_2c(ip, student_id, password):
             return False
     except:
         return False
+    return True
+
+
+@chk_wrap(20, '2e')
+def chk_2e(ip):
+    try:
+        driver.get('http://' + str(ip) + '/device/1')
+        time.sleep(1)
+        check_point = driver.find_element_by_xpath(
+            '//*[@class="panel-body"]/div[4]/div[2]').get_attribute('innerHTML')
+
+        if re.search('Ubuntu', check_point) is None:
+            return False
+    except:
+        return False
+
     return True
