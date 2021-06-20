@@ -1,4 +1,4 @@
-# CCNSAnime_ffmpeg_pool
+# NCKU NASA 2021 final judge
 
 ## Dependencies
 * pipenv
@@ -20,5 +20,3 @@ pipenv run celery -A tasks worker -c 1 -l info
 ```
 
 ## Api
-### [Create new task](Document/anime_api.md#create-new-task)
-### [Get Task status](Document/anime_api.md#get-task-status)
