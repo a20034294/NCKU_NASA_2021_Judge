@@ -37,6 +37,7 @@ def judge_create_task(student_id, password):
     chk_2e(ip)
     chk_2f(ip)
     chk_2g(ip)
+    chk_3a(ip)
     try:
         driver.quit()
     except:
@@ -148,6 +149,21 @@ def chk_2g(ip):
             script, stderr=STDOUT, timeout=10, shell=True).decode('utf-8')
         print(result1, result2)
         if result1 != result2:
+            return True
+    except:
+        pass
+    return False
+
+
+@chk_wrap(10, '3a')
+def chk_3a(ip):
+    ssh = f"ssh -oUserKnownHostsFile=/dev/null -oStrictHostKeyChecking=no ncku-nasa@{ip} -t "
+    script = f"{ssh}'sudo dig @127.0.0.1 librenms.finalexam.ncku'"
+    try:
+        result = check_output(
+            script, stderr=STDOUT, timeout=10, shell=True).decode('utf-8')
+
+        if re.search(ip, result) is not None:
             return True
     except:
         pass
