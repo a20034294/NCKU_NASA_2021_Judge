@@ -51,6 +51,10 @@
                     }, 1000)
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    if (XMLHttpRequest.status == 403) {
+                        alert("帳號密碼錯誤");
+                        return;
+                    }
                     alert("送出失敗 請截圖 dev tools 的 network 感謝");
                 }
             });

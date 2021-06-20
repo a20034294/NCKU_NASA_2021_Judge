@@ -2,9 +2,21 @@ import re
 from subprocess import STDOUT, check_output
 from os import getenv as env
 import re
+from selenium import webdriver
+import time
 
 students = {}
 result_data = {}
+driver_opt = webdriver.ChromeOptions()
+driver_opt.add_argument('--headless')
+driver_opt.add_argument('--disable_gpu')
+driver_opt.add_argument('--no-sandbox')
+driver_opt.add_argument('ignore-certificate-errors')
+driver_opt.add_argument(
+    'user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36')
+driver = webdriver.Chrome('chromedriver', chrome_options=driver_opt)
+
+
 with open(env('STUDENT_PATH'), 'r', encoding='utf-8') as f:
     lines = f.readlines()
     for line in lines:
@@ -19,6 +31,11 @@ def judge_create_task(student_id, password):
 
     chk_1a(ip)
     chk_2a(ip)
+    chk_2c(ip, student_id, password)
+    try:
+        driver.close()
+    except:
+        pass
     return result_data
 
 
@@ -60,3 +77,22 @@ def chk_2a(ip):
     if re.search('[^\n]+:80\s.*nginx', result) is not None:
         return True
     return False
+
+
+@chk_wrap(10, '2c')
+def chk_2c(ip, student_id, password):
+    try:
+        driver.get('http://' + str(ip))
+        user_field = driver.find_element_by_xpath('//*[@id="username"]')
+        user_field.send_keys(student_id)
+        pass_field = driver.find_element_by_xpath('//*[@id="password"]')
+        pass_field.send_keys(password)
+        driver.find_element_by_xpath('//*[@id="login"]').click()
+        time.sleep(1)
+        check_point = driver.find_element_by_xpath(
+            '//*[@id="navHeaderCollapse"]/ul/li/a/span/small').get_attribute('innerHTML')
+        if check_point != student_id:
+            return False
+    except:
+        return False
+    return True
