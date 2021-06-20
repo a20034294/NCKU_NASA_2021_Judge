@@ -14,8 +14,7 @@ driver_opt.add_argument('--no-sandbox')
 driver_opt.add_argument('ignore-certificate-errors')
 driver_opt.add_argument(
     'user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36')
-driver = webdriver.Chrome('chromedriver', chrome_options=driver_opt)
-
+driver = None
 
 with open(env('STUDENT_PATH'), 'r', encoding='utf-8') as f:
     lines = f.readlines()
@@ -29,12 +28,17 @@ def judge_create_task(student_id, password):
     result_data['score'] = 0
     ip = students[student_id][2]
 
+    global driver
+    driver = webdriver.Chrome('chromedriver', chrome_options=driver_opt)
+
     chk_1a(ip)
     chk_2a(ip)
     chk_2c(ip, student_id, password)
     chk_2e(ip)
+    chk_2f(ip)
+    chk_2g(ip)
     try:
-        driver.close()
+        driver.quit()
     except:
         pass
     return result_data
@@ -113,3 +117,38 @@ def chk_2e(ip):
         return False
 
     return True
+
+
+@chk_wrap(15, '2f')
+def chk_2f(ip):
+    try:
+        driver.get('https://' + str(ip) + '/device/1')
+        time.sleep(1)
+        check_point = driver.find_element_by_xpath(
+            '//*[@class="panel-body"]/div[4]/div[2]').get_attribute('innerHTML')
+
+        if re.search('Ubuntu', check_point) is None:
+            return False
+    except:
+        return False
+
+    return True
+
+
+@chk_wrap(10, '2g')
+def chk_2g(ip):
+    ssh = f"ssh -oUserKnownHostsFile=/dev/null -oStrictHostKeyChecking=no ncku-nasa@{ip} -t "
+    script = f"{ssh}'sudo du -b /var/log/nginx/librenms.access.log'"
+    try:
+        result1 = check_output(
+            script, stderr=STDOUT, timeout=10, shell=True).decode('utf-8')
+        driver.get('http://' + str(ip))
+        time.sleep(1)
+        result2 = check_output(
+            script, stderr=STDOUT, timeout=10, shell=True).decode('utf-8')
+        print(result1, result2)
+        if result1 != result2:
+            return True
+    except:
+        pass
+    return False
