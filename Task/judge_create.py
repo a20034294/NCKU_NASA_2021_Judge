@@ -38,6 +38,8 @@ def judge_create_task(student_id, password):
     chk_2f(ip)
     chk_2g(ip)
     chk_3a(ip)
+    chk_4a(ip)
+    chk_4b(ip)
     try:
         driver.quit()
     except:
@@ -164,6 +166,40 @@ def chk_3a(ip):
             script, stderr=STDOUT, timeout=10, shell=True).decode('utf-8')
 
         if re.search(ip, result) is not None:
+            return True
+    except:
+        pass
+    return False
+
+
+@chk_wrap(10, '4a')
+def chk_4a(ip):
+    ssh = f"ssh -oUserKnownHostsFile=/dev/null -oStrictHostKeyChecking=no ncku-nasa@{ip} -t "
+    script = f"{ssh}'echo `sudo systemctl status noget.service`'"
+    try:
+        result = check_output(
+            script, stderr=STDOUT, timeout=10, shell=True).decode('utf-8')
+        print(result)
+        if re.search('Active: active \(running\)', result) is not None:
+            return True
+    except:
+        pass
+    return False
+
+
+@chk_wrap(10, '4b')
+def chk_4b(ip):
+    ssh = f"ssh -oUserKnownHostsFile=/dev/null -oStrictHostKeyChecking=no ncku-nasa@{ip} -t "
+    script = f"{ssh}'sudo grep \"TEG\" /var/log/nginx/noget.access.log | wc -l'"
+    try:
+        result1 = check_output(
+            script, stderr=STDOUT, timeout=10, shell=True).decode('utf-8')
+        driver.get('http://' + str(ip))
+        time.sleep(1)
+        result2 = check_output(
+            script, stderr=STDOUT, timeout=10, shell=True).decode('utf-8')
+        print(result1, result2)
+        if result1 != result2:
             return True
     except:
         pass
