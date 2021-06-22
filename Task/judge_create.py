@@ -58,7 +58,7 @@ def chk_wrap(score, problem_id):
     return decorator
 
 
-@chk_wrap(10, '1a')
+@chk_wrap(5, '1a')
 def chk_1a(ip):
     ssh = f"ssh -oUserKnownHostsFile=/dev/null -oStrictHostKeyChecking=no ncku-nasa@{ip} -t "
     script = f"{ssh}'snmpwalk -v 2c 127.0.0.1 -c \"public\" .1.3.6.1.4.1.2021.4'"
@@ -106,7 +106,7 @@ def chk_2c(ip, student_id, password):
     return True
 
 
-@chk_wrap(20, '2e')
+@chk_wrap(10, '2e')
 def chk_2e(ip):
     try:
         driver.get('http://' + str(ip) + '/device/1')
@@ -122,7 +122,7 @@ def chk_2e(ip):
     return True
 
 
-@chk_wrap(15, '2f')
+@chk_wrap(10, '2f')
 def chk_2f(ip):
     try:
         driver.get('https://' + str(ip) + '/device/1')
@@ -138,7 +138,7 @@ def chk_2f(ip):
     return True
 
 
-@chk_wrap(10, '2g')
+@chk_wrap(5, '2g')
 def chk_2g(ip):
     ssh = f"ssh -oUserKnownHostsFile=/dev/null -oStrictHostKeyChecking=no ncku-nasa@{ip} -t "
     script = f"{ssh}'sudo du -b /var/log/nginx/librenms.access.log'"
@@ -157,7 +157,7 @@ def chk_2g(ip):
     return False
 
 
-@chk_wrap(10, '3a')
+@chk_wrap(5, '3a')
 def chk_3a(ip):
     ssh = f"ssh -oUserKnownHostsFile=/dev/null -oStrictHostKeyChecking=no ncku-nasa@{ip} -t "
     script = f"{ssh}'sudo dig @127.0.0.1 librenms.finalexam.ncku'"
