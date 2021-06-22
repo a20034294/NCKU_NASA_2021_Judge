@@ -2,20 +2,32 @@
 
 - hosts: worker
   tasks:
-    # - name: Install python3-pip tmux chromedriver
-    #   apt:
-    #     name:
-    #       - python3-pip
-    #       - tmux
-    #       - chromium-chromedriver
-    #       - libappindicator1
-    #       - fonts-liberation
-    #       - libnss3
+    - name: Install dependency
+      apt:
+        name:
+          - python3-pip
+          - tmux
+          - libappindicator1
+          - fonts-liberation
+          - libnss3
+          - unzip
+        state: fixed
 
-    # - name: Install pipenv
-    #   pip:
-    #     name: pipenv
-    #     executable: pip3
+    - name: Install google-chrome
+      shell: |
+        wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+        dpkg -i google-chrome*.deb
+        apt-get install -f -y
+        wget https://chromedriver.storage.googleapis.com/92.0.4515.43/chromedriver_linux64.zip
+        unzip chromedriver_linux64.zip
+        mv ./chromedriver /usr/bin
+      args:
+        chdir: "/tmp"
+
+    - name: Install pipenv
+      pip:
+        name: pipenv
+        executable: pip3
 
     - name: Sync src files
       synchronize:
@@ -30,11 +42,11 @@
         dest: "{{ worker_dest_path }}/.env"
         delete: yes
 
-    # - name: Pipenv install
-    #   shell: |
-    #     pipenv install
-    #   args:
-    #     chdir: "{{ worker_dest_path }}"
+    - name: Pipenv install
+      shell: |
+        pipenv install
+      args:
+        chdir: "{{ worker_dest_path }}"
 
     - name: Run worker
       shell: |
