@@ -11,6 +11,7 @@
           - fonts-liberation
           - libnss3
           - unzip
+          - htop
         state: fixed
 
     - name: Install google-chrome
@@ -18,7 +19,7 @@
         wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
         dpkg -i google-chrome*.deb
         apt-get install -f -y
-        wget https://chromedriver.storage.googleapis.com/92.0.4515.43/chromedriver_linux64.zip
+        wget https://chromedriver.storage.googleapis.com/91.0.4472.101/chromedriver_linux64.zip
         unzip chromedriver_linux64.zip
         mv ./chromedriver /usr/bin
       args:
