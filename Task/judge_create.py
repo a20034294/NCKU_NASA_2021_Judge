@@ -4,6 +4,7 @@ from os import getenv as env
 import re
 from selenium import webdriver
 import time
+from datetime import datetime
 
 students = {}
 result_data = {}
@@ -41,6 +42,9 @@ def judge_create_task(student_id, password):
     chk_4a(ip)
     chk_4b(ip)
     try:
+        with open('/root/score/score.csv', 'a', encoding='utf-8') as f:
+            f.write(datetime.now().strftime("%H:%M:%S") + ',' +
+                    student_id + ',' + str(result_data['score']) + '\n')
         driver.quit()
     except:
         pass
